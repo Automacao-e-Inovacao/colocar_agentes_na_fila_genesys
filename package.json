@@ -1,0 +1,15 @@
+{
+  "name": "colocar_agentes_na_fila_genesys",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "purecloud-platform-client-v2": "^188.0.1"
+  }
+}

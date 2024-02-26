@@ -10,20 +10,19 @@ const ORG_REGION = "sa_east_1"; // eg. us_east_1
 (async () => {
   const startTime = Date.now()
 
-  const token = await authApiProxy.authenticate(CLIENT_ID, CLIENT_SECRET, ORG_REGION);
+  const authToken = await authApiProxy.authenticate(CLIENT_ID, CLIENT_SECRET, ORG_REGION);
 
   let pageNumber = 1
   let pageCount = 1
-  let nUsersOutOfQueue = 0
+  let numUsersOutOfQueue = 0
 
   while (pageNumber <= pageCount) {
-    // Buscando usuários ativos
+
     users = await getActiveUsers(pageNumber);
     
-    // Filtrando os usuários válidos
     validUsers = await filterUsersByDivision(users);
 
-    nUsersOutOfQueue = validUsers.length + nUsersOutOfQueue
+    numUsersOutOfQueue = validUsers.length + numUsersOutOfQueue
   
     for (user of validUsers) {
       await setUserPresence(user.id);
@@ -33,11 +32,9 @@ const ORG_REGION = "sa_east_1"; // eg. us_east_1
     pageCount = users.pageCount
   }
   
-  const endTime = Date.now(); // Captura o tempo de término
-  const executionTime = endTime - startTime; // Calcula o tempo de execução em milissegundos
+  const endTime = Date.now();
+  const executionTime = endTime - startTime; // milissegundos
   
-  console.log(`\nQtd de pessoas fora da fila: ${nUsersOutOfQueue}`)
-  console.log(`\nAgentes fora da fila:`)
-  console.log(`\nTempo de execução da RPA: ${executionTime}ms`)
+  console.log(`\nQtd de pessoas fora da fila: ${numUsersOutOfQueue}`)
   console.log(`\nTempo de execução da RPA: ${executionTime/1000}s`)
 })()

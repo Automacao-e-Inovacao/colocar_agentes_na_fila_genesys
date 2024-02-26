@@ -6,7 +6,7 @@ async function getActiveUsers(pageNumber) {
       "pageSize": 200, // Number | Page size
       "pageNumber": pageNumber, // Number | Page number
       "sortOrder": "ASC", // String | Ascending or descending sort order
-      "expand": ["presence"], // [String] | Which fields, if any, to expand
+      "expand": ["presence", "groups"], // [String] | Which fields, if any, to expand
       "state": "active" // String | Only list users of this state
   };
   

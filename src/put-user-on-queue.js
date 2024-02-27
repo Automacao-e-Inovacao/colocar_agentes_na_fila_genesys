@@ -1,6 +1,5 @@
 const authApiProxy = require('../proxies/authenticateApi');
 const getActiveUsers = require('./functions/get-active-users');
-const filterUsersByDivision = require('./functions/filter-users-by-division');
 const filterUsersByGroup = require('./functions/filter-users-by-group');
 const setUserPresence = require('./functions/set-user-presence');
 
@@ -12,31 +11,22 @@ const ORG_REGION = "sa_east_1"; // eg. us_east_1
   const startTime = Date.now()
 
   const token = await authApiProxy.authenticate(CLIENT_ID, CLIENT_SECRET, ORG_REGION);
-
-  let pageNumber = 1
-  let pageCount = 1
+  
   let numUsersOutOfQueue = 0
 
-  while (pageNumber <= pageCount) {
-    // Buscando usuários ativos
-    users = await getActiveUsers(pageNumber);
-    
-    // Filtrando os usuários válidos
-    validUsers = await filterUsersByGroup(users);
+  const activeUsers = await getActiveUsers();
 
-    numUsersOutOfQueue = validUsers.length + numUsersOutOfQueue
-  
-    for (user of validUsers) {
-      await setUserPresence(user.id);
-    }
+  // const validUsers = await filterUsersByGroup(users);
 
-    pageNumber = users.pageNumber + 1
-    pageCount = users.pageCount
-  }
+  // numUsersOutOfQueue = validUsers.length + numUsersOutOfQueue
+
+  // for (user of validUsers) {
+  //   await setUserPresence(user.id);
+  // }
   
-  const endTime = Date.now();
-  const executionTime = endTime - startTime; // milissegundos
+  // const endTime = Date.now();
+  // const executionTime = endTime - startTime; // milissegundos
   
-  console.log(`\nTempo de execução da RPA: ${executionTime}ms`)
-  console.log(`\nTempo de execução da RPA: ${executionTime/1000}s`)
+  // console.log(`\nTempo de execução da RPA: ${executionTime}ms`)
+  // console.log(`\nTempo de execução da RPA: ${executionTime/1000}s`)
 })()

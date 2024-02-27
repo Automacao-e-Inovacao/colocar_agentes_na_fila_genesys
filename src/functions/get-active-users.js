@@ -1,7 +1,12 @@
 const platformClient = require('purecloud-platform-client-v2')
 const usersApi = new platformClient.UsersApi();
 
-async function getActiveUsers(pageNumber) {
+async function getActiveUsers() {
+
+  let pageNumber = 1
+  let pageCount = 1
+  let activeUsersList = []
+
   let opts = {
       "pageSize": 200, // Number | Page size
       "pageNumber": pageNumber, // Number | Page number
@@ -11,7 +16,15 @@ async function getActiveUsers(pageNumber) {
   };
   
   try {
-    return await usersApi.getUsers(opts)
+    while (pageNumber <= pageCount) {
+      const activeUsers = await usersApi.getUsers(opts)
+      activeUsersList.push(...activeUsers.entities)
+
+      pageNumber = activeUsers.pageNumber + 1
+      pageCount = activeUsers.pageCount
+      opts.pageNumber = pageNumber
+    }
+    return activeUsersList
   } catch (e) {
     console.log("There was a failure calling getUsers");
     console.error(e);

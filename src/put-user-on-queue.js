@@ -9,29 +9,6 @@ const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
 const orgRegion = process.env.ORG_REGION;
 
-// (async () => {
-//   const startTime = Date.now()
-
-//   const token = await authApiProxy.authenticate(CLIENT_ID, CLIENT_SECRET, ORG_REGION);
-  
-//   const activeUsers = await getActiveUsers();
-//   const validUsers = await filterUsersByGroup(activeUsers);
-
-//   if (validUsers.length > 0) {
-//     for (user of validUsers) {
-//       await setUserPresence(user.id);
-//     }
-//   } 
-
-//   const endTime = Date.now();
-//   const executionTime = endTime - startTime; // milissegundos
-
-//   console.log(`\n----------------------------------------------`)
-//   console.log(`Usuários fora da fila: ${validUsers.length}`)
-//   console.log(`\nTempo de execução da RPA: ${executionTime/1000}s`)
-// })()
-
-
 const putUserOnQueue = async () => {
   const startTime = Date.now()
 

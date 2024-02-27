@@ -1,6 +1,6 @@
 const getGroups = require("./get-groups")
 
-let validGroups = [
+let validGroupsList = [
   "Acionamento Ilhas - GO",
 	"Apoio Comercial - Backoffice - Agentes",
 	"EQT Dist - GC - Ag Backup",
@@ -39,15 +39,17 @@ let validGroups = [
 
 async function filterUsersByGroup(users) {
 
-  //TODO: Buscar os grupos existentes
   const groups = await getGroups()
 
-  //TODO: Filtrar os grupos pelo nome -> ValidGroupsWithId
-  console.log(groups)
+  const validGroupsWithId = groups.entities.filter(group => validGroupsList.includes(group.name))
+	
+	const validGroupIds = validGroupsWithId.map(group => group.id)
 
-  //TODO: Verificar se o id do grupo do usuario está na lista dos grupos validos com id (ValidGroupsWithId)
-
-
+	const filteredUsers = users.entities.filter(user =>
+		user.groups.some(group => validGroupIds.includes(group.id))
+	);
+	
+	return filteredUsers;
 }
 
 module.exports = filterUsersByGroup

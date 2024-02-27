@@ -5,6 +5,7 @@ async function getGroups() {
   let opts = {
     "pageSize": 100,
     "pageNumber": 1,
+    "sortOrder": "ASC"
   };
 
   try {
@@ -15,4 +16,4 @@ async function getGroups() {
   }
 }
 
-module.exports = getGroups()
+module.exports = getGroups

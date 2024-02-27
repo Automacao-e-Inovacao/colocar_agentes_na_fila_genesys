@@ -1,5 +1,6 @@
 const authApiProxy = require('../proxies/authenticateApi');
 const getActiveUsers = require('./functions/get-active-users');
+const filterUsersByDivision = require('./functions/filter-users-by-division');
 const filterUsersByGroup = require('./functions/filter-users-by-group');
 const setUserPresence = require('./functions/set-user-presence');
 
@@ -11,37 +12,31 @@ const ORG_REGION = "sa_east_1"; // eg. us_east_1
   const startTime = Date.now()
 
   const token = await authApiProxy.authenticate(CLIENT_ID, CLIENT_SECRET, ORG_REGION);
-  console.log(token)
 
-  // let pageNumber = 1
-  // let pageCount = 1
-  // let numUsersOutOfQueue = 0
+  let pageNumber = 1
+  let pageCount = 1
+  let numUsersOutOfQueue = 0
 
-  // while (pageNumber <= pageCount) {
-
-  //   users = await getActiveUsers(pageNumber);
+  while (pageNumber <= pageCount) {
+    // Buscando usuários ativos
+    users = await getActiveUsers(pageNumber);
     
-  //   validUsers = await filterUsersByGroup(users);
+    // Filtrando os usuários válidos
+    validUsers = await filterUsersByGroup(users);
 
-  //   validUsers.forEach(user => {
-  //     console.log(user)
-  //   })
-
-  //   numUsersOutOfQueue = validUsers.length + numUsersOutOfQueue
-    
-  //   // TODO: Descomentar quando terminar o filtro de agentes
-  //   // for (user of validUsers) {
-  //   //   await setUserPresence(user.id);
-  //   // }
-
-  //   // pageNumber = users.pageNumber + 1
-  //   // pageCount = users.pageCount
-  //   break
-  // }
+    numUsersOutOfQueue = validUsers.length + numUsersOutOfQueue
   
-  // const endTime = Date.now();
-  // const executionTime = endTime - startTime; // milissegundos
+    for (user of validUsers) {
+      await setUserPresence(user.id);
+    }
+
+    pageNumber = users.pageNumber + 1
+    pageCount = users.pageCount
+  }
   
-  // console.log(`\nQtd de pessoas fora da fila: ${numUsersOutOfQueue}`)
-  // console.log(`\nTempo de execução da RPA: ${executionTime/1000}s`)
+  const endTime = Date.now();
+  const executionTime = endTime - startTime; // milissegundos
+  
+  console.log(`\nTempo de execução da RPA: ${executionTime}ms`)
+  console.log(`\nTempo de execução da RPA: ${executionTime/1000}s`)
 })()

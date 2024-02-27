@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "purecloud-platform-client-v2": "^188.0.1"
   }
 }

@@ -41,12 +41,18 @@ async function filterUsersByGroup(users) {
 
   const groups = await getGroups()
 
-  const validGroupsWithId = groups.entities.filter(group => validGroupsList.includes(group.name))
-	
+  const validGroupsWithId = groups.filter(group => validGroupsList.includes(group.name))
+
 	const validGroupIds = validGroupsWithId.map(group => group.id)
 
-	const filteredUsers = users.entities.filter(user =>
-		user.groups.some(group => validGroupIds.includes(group.id))
+	const filteredUsers = users.filter(user => {
+		
+		const isGroupValid = user.groups.some(group => validGroupIds.includes(group.id))
+		
+		const isNotOnQueue = user.presence.presenceDefinition.id == "6a3af858-942f-489d-9700-5f9bcdcdae9b" // Available
+		
+		return isGroupValid && isNotOnQueue
+	}
 	);
 	
 	return filteredUsers;
